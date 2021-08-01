@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, SafeAreaView, ImageBackground, TouchableOpacity, Image} from 'react-native'
+import {View, Text, SafeAreaView, ImageBackground, TouchableOpacity, Image, ScrollView, Animated} from 'react-native'
 import { COLORS,FONTS, SIZES, icons, images  } from '../constants'
 
 const LineDivider = () => {
@@ -12,6 +12,9 @@ const LineDivider = () => {
 
 const BookDetail = ({route, navigation}) => {
     const [book, setBook] = useState(null);
+    const [scrollViewWholeHeight, setScrollViewWholeHeight] = useState(1);
+    const [scrollViewVisibleHeight, setScrollViewVisibleHeight] = useState(0);
+    const indicator = new Animated.Value(0)
 
     useEffect(() => {
         let {book} = route.params;
@@ -140,7 +143,7 @@ const BookDetail = ({route, navigation}) => {
                     <Text
                         style={{
                             ...FONTS.h3,
-                            color: COLORS.white
+                            color: book.navTintColor
                         }}
                     >
                         {book.bookName}
@@ -148,7 +151,7 @@ const BookDetail = ({route, navigation}) => {
                     <Text
                         style={{
                             ...FONTS.body4,
-                            color: COLORS.white
+                            color: book.navTintColor
                         }}
                     >
                         {book.author}
@@ -251,6 +254,77 @@ const BookDetail = ({route, navigation}) => {
         )
     }
 
+    function renderBookDescription(){
+        const indicatorSize = scrollViewWholeHeight > scrollViewVisibleHeight ? scrollViewVisibleHeight * scrollViewVisibleHeight / scrollViewWholeHeight : scrollViewVisibleHeight
+
+        const difference = scrollViewVisibleHeight > indicatorSize ? scrollViewVisibleHeight - indicatorSize : 1
+
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: SIZES.padding
+                }}
+            >
+                {/* Custom Scrollbar */}
+                <View style={{ width: 4, height: "100%", backgroundColor: COLORS.gray1 }}>
+                    <Animated.View
+                        style={{
+                            width: 4,
+                            height: indicatorSize,
+                            backgroundColor: COLORS.lightGray4,
+                            transform: [{
+                                translateY: Animated.multiply(indicator, scrollViewVisibleHeight / scrollViewWholeHeight).interpolate({
+                                    inputRange: [0, difference],
+                                    outputRange: [0, difference],
+                                    extrapolate: 'clamp'
+                                })
+                            }]
+                        }}
+                    />
+                </View>
+
+                {/* Description */}
+                <ScrollView
+                    contentContainerStyle= {{
+                        paddingLeft: SIZES.padding2,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    scrollEventThrottle={16}
+                    onContentSizeChange={(width, height) => {
+                        setScrollViewWholeHeight(height)
+                    }}
+                    onLayout={({ nativeEvent: { layout: { x, y, width, height } } }) => {
+                        setScrollViewVisibleHeight(height)
+                    }}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: indicator } } }],
+                        { useNativeDriver: false }
+                    )}
+
+                >
+                    <Text 
+                        style={{
+                            color: COLORS.white,
+                            ...FONTS.h2
+                        }}
+                    >
+                        Description
+                    </Text>
+                    <Text
+                        style={{
+                            color: COLORS.lightGray,
+                            ...FONTS.body2
+                        }}
+                    >
+                        {book.description}
+                    </Text>
+                </ScrollView>
+            </View>
+        )
+    }
+
     if (book){
         return (
             <View 
@@ -274,6 +348,7 @@ const BookDetail = ({route, navigation}) => {
                         flex: 2,
                     }}
                 >
+                    {renderBookDescription()}
                 </View>
 
                 {/* Button */}
