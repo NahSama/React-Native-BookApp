@@ -12,7 +12,7 @@ const LineDivider = () => {
     )
 }
 
-const Home = () => {
+const Home = ({navigation}) => {
     const profileData = {
         name: 'Username',
         point: 200
@@ -301,6 +301,11 @@ const Home = () => {
                         flex: 1,
                         marginRight: SIZES.padding
                     }}
+                    onPress={() => {
+                        navigation.navigate('BookDetail', {
+                            book: item
+                        })
+                    }}
                 >
                     {/* Book Covers */}
                     <Image
@@ -471,7 +476,11 @@ const Home = () => {
                             flex: 1,
                             flexDirection: 'row',
                         }}
-                        onPress={() => console.log()}
+                        onPress={() => {
+                            navigation.navigate('BookDetail', {
+                                book: item
+                            })
+                        }}
                     >
                         {/* Book Cover */}
                         <Image
