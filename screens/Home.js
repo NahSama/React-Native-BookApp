@@ -4,6 +4,14 @@ import {SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image } from 're
 import { color } from 'react-native-reanimated'
 import { COLORS,FONTS, SIZES, icons   } from '../constants'
 
+const LineDivider = () => {
+    return (
+        <View style={{width: 1, paddingVertical: 18}}>
+            <View style={{flex: 1, borderLeftColor: COLORS.lightGray, borderLeftWidth: 1}}></View>
+        </View>
+    )
+}
+
 const Home = () => {
     const profileData = {
         name: 'Username',
@@ -42,6 +50,135 @@ const Home = () => {
         )
     }
 
+    function renderButtonSection(){
+        return (
+            <View 
+                style={{
+                    flex: 1, 
+                    justifyContent:'center', 
+                    padding: SIZES.padding
+                }}
+            >
+                <View 
+                    style={{
+                        flexDirection:'row', 
+                        height: 70, 
+                        backgroundColor:COLORS.secondary, 
+                        borderRadius: SIZES.radius
+                    }}
+                >
+                    {/* Claims */}
+                    <TouchableOpacity 
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <View 
+                            style={{
+                                flex: 1, 
+                                flexDirection:'row', 
+                                alignItems:'center', 
+                                justifyContent:'center'
+                            }}
+                        >
+                            <Image 
+                                source={icons.claim_icon}
+                                resizeMode="contain"
+                                style={{
+                                    width:30, 
+                                    height: 30
+                                }}
+                            />
+                            <Text 
+                                style={{
+                                    marginLeft: SIZES.base,
+                                    ...FONTS.body3, 
+                                    color: COLORS.white
+                                }}
+                            >
+                                Claim
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    {/* LineDivider */}
+                    <LineDivider/>
+
+                    {/* Get Point */}
+                    <TouchableOpacity 
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <View 
+                            style={{
+                                flex: 1, 
+                                flexDirection:'row', 
+                                alignItems:'center', 
+                                justifyContent:'center'
+                            }}
+                        >
+                            <Image 
+                                source={icons.point_icon}
+                                resizeMode="contain"
+                                style={{
+                                    width:30, 
+                                    height: 30
+                                }}
+                            />
+                            <Text 
+                                style={{
+                                    marginLeft: SIZES.base,
+                                    ...FONTS.body3, 
+                                    color: COLORS.white
+                                }}
+                            >
+                                Get Point
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    {/* Line Divider */}
+                    <LineDivider/>
+
+                    {/* My Card */}
+                    <TouchableOpacity 
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <View 
+                            style={{
+                                flex: 1, 
+                                flexDirection:'row', 
+                                alignItems:'center', 
+                                justifyContent:'center'
+                            }}
+                        >
+                            <Image 
+                                source={icons.card_icon}
+                                resizeMode="contain"
+                                style={{
+                                    width:30, 
+                                    height: 30
+                                }}
+                            />
+                            <Text 
+                                style={{
+                                    marginLeft: SIZES.base,
+                                    ...FONTS.body3, 
+                                    color: COLORS.white
+                                }}
+                            >
+                                My Card
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.style}>
             {/* Header section */}
@@ -51,7 +188,7 @@ const Home = () => {
 
             {/* Body Section */}
             <View>
-
+                {renderButtonSection()}
             </View>
         </SafeAreaView>
     )
