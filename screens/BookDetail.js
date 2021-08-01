@@ -325,6 +325,66 @@ const BookDetail = ({route, navigation}) => {
         )
     }
 
+    function renderButtonSection(){
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row'
+                }}
+            >
+                {/* Bookmark */}
+                <TouchableOpacity
+                    style={{
+                        width: 60,
+                        backgroundColor: COLORS.secondary,
+                        marginLeft: SIZES.padding,
+                        marginVertical: SIZES.base,
+                        borderRadius: SIZES.radius,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                    onPress={() => {}}
+                >
+                    <Image
+                        source={icons.bookmark_icon}
+                        resizeMode='contain'
+                        style={{
+                            width: 30,
+                            height: 30,
+                            tintColor: COLORS.lightGray
+                        }}
+                    />
+
+                </TouchableOpacity>
+
+                {/* Start Reading */}
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        backgroundColor: COLORS.primary,
+                        marginRight: SIZES.padding,
+                        marginVertical: SIZES.base,
+                        marginHorizontal: SIZES.base,
+                        borderRadius: SIZES.radius,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                    onPress={() => {}}
+                >
+                    <Text
+                        style={{
+                            color: COLORS.white,
+                            ...FONTS.h3
+                        }}
+                    >
+                        Start Reading
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     if (book){
         return (
             <View 
@@ -354,9 +414,11 @@ const BookDetail = ({route, navigation}) => {
                 {/* Button */}
                 <View
                     style={{
-                        height: 70
+                        height: 70,
+                        marginBottom: 30
                     }}
                 >
+                    {renderButtonSection()}
                 </View>
             </View>
         )
