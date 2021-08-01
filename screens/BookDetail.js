@@ -18,10 +18,20 @@ const BookDetail = ({route, navigation}) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const indicator = new Animated.Value(0)
 
+    let _onFinishedLoadingURLSubscription = null;
+
     useEffect(() => {
         let {book} = route.params;
         setBook(book);
+
+        _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
+            console.log('finished loading url', success, url)
+        })
+      
         SoundPlayer.loadUrl(book.url);
+        return () => {
+            _onFinishedLoadingURLSubscription.remove()
+        }
     }, [book])
 
     const togglePlayingAudio = () => {
@@ -399,7 +409,7 @@ const BookDetail = ({route, navigation}) => {
                             ...FONTS.h3
                         }}
                     >
-                        {!isPlaying ? 'Start Playing' : 'Pause'}
+                        {!isPlaying ? 'Play' : 'Pause'}
                     </Text>
                 </TouchableOpacity>
             </View>
