@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, SafeAreaView, ImageBackground, TouchableOpacity, Image, ScrollView, Animated} from 'react-native'
 import { COLORS,FONTS, SIZES, icons, images  } from '../constants'
+import SoundPlayer from 'react-native-sound-player'
 
 const LineDivider = () => {
     return (
@@ -14,12 +15,32 @@ const BookDetail = ({route, navigation}) => {
     const [book, setBook] = useState(null);
     const [scrollViewWholeHeight, setScrollViewWholeHeight] = useState(1);
     const [scrollViewVisibleHeight, setScrollViewVisibleHeight] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
     const indicator = new Animated.Value(0)
 
     useEffect(() => {
         let {book} = route.params;
         setBook(book);
+        SoundPlayer.loadUrl(book.url);
     }, [book])
+
+    const togglePlayingAudio = () => {
+        if (!isPlaying){
+            try{
+                SoundPlayer.play();
+            } catch (error){
+                console.log(error)
+            }
+        }else {
+            try{
+                SoundPlayer.pause();
+            } catch (error){
+                console.log(error)
+            }
+        }
+        setIsPlaying(!isPlaying);
+    }
+    
 
     function renderBookInfoSection () {
         return (
@@ -370,7 +391,7 @@ const BookDetail = ({route, navigation}) => {
                         justifyContent:'center',
                         alignItems:'center'
                     }}
-                    onPress={() => {}}
+                    onPress={togglePlayingAudio}
                 >
                     <Text
                         style={{
@@ -378,7 +399,7 @@ const BookDetail = ({route, navigation}) => {
                             ...FONTS.h3
                         }}
                     >
-                        Start Reading
+                        {!isPlaying ? 'Start Playing' : 'Pause'}
                     </Text>
                 </TouchableOpacity>
             </View>
